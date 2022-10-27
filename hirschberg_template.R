@@ -50,9 +50,9 @@ hirschberg_template <- function(seq1, seq2, align, match, mismatch, gap){
         y_mid <- max(left_score + rev(right_score))# index of division for seq2
 
         # The first half
-        if (y_mid = 0)# index of division for seq2 is equal to 0
+        if (y_mid == 0)# index of division for seq2 is equal to 0
         {
-            align <- hirshberg_template(seq1[1:x_mid], ' ', align, match, mismatch, gap)# call hirschberg function for the first half of seq1 and for an empty DNAString object
+            align <- hirshberg_template(seq1[1:x_mid], DNAString(), align, match, mismatch, gap)# call hirschberg function for the first half of seq1 and for an empty DNAString object
         }
         else
         {
@@ -62,11 +62,11 @@ hirschberg_template <- function(seq1, seq2, align, match, mismatch, gap){
         # The second half
         if ((x_mid + 1) > x_len) # seq1 cannot be further divided
         {
-            align <- hirshberg_template(' ', seq2[y_mid:end], align, match, mismatch, gap)# call hirschberg function for an empty DNAString object and the second half of seq2
+            align <- hirshberg_template(DNAString(), seq2[y_mid:end], align, match, mismatch, gap)# call hirschberg function for an empty DNAString object and the second half of seq2
         }
         else if ((y_mid + 1) > y_len) # seq2 cannot be further divided
         {
-            align <- hirshberg_template(seq1[x_mid:end], ' ', align, match, mismatch, gap)# call hirschberg function for the second half of seq1 and for an empty DNAString object
+            align <- hirshberg_template(seq1[x_mid:end], DNAString(), align, match, mismatch, gap)# call hirschberg function for the second half of seq1 and for an empty DNAString object
         }
         else 
         {
@@ -78,9 +78,9 @@ hirschberg_template <- function(seq1, seq2, align, match, mismatch, gap){
 
 
 nw <- function(seq1, seq2){
-  Score(0, 0) <- 0 // 2 * (length(seq2) + 1)
+  Score(0, 0) <- 0
   for (j in 1:length(seq2)){
-    Score(0, j) = Score(0, j - 1) + (seq2[j])
+    Score(0, j) <- Score(0, j - 1) + (seq2[j])
   }
   for (i in 1:length(seq1)){
     Score(1, 0) = Score(0, 0) + (seq1[i])
@@ -93,10 +93,7 @@ nw <- function(seq1, seq2){
     }
       
     }
-  
-  // Copy Score[1] to Score[0]
   Score(0, :) = Score(1, :)
-  end
   for (j in 0:length(seq2)){
     LastLine[j] <- Score(1, j)
   }
